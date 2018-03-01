@@ -1,0 +1,31 @@
+.home-page {
+
+}
+
+.home-page header {
+    text-align: center;
+    font-size: 32px;
+    font-family: "Roboto", sans-serif;
+    color: #212121;
+    margin: 30px 0;
+}
+
+.home-page ul {
+
+}
+
+.home-page ul li {
+    text-align: center;
+}
+
+.home-page ul a {
+    display: inline-block;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    padding: 10px 5px;
+    transition: color .3s;
+}
+
+.home-page ul a:hover {
+    color: #212121;
+}
