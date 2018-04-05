@@ -1,3 +1,23 @@
 body {
     margin: 0;
 }
+
+.container .back-btn {
+    padding: 10px 15px;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color .3s;
+}
+
+.container .back-btn:hover {
+    color: #212121;
+}
+
+.canvas-container {
+}
+
+.canvas-container canvas {
+    display: block;
+    margin: 0 auto;
+}

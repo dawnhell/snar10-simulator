@@ -1,0 +1,6 @@
+{
+  "name": "trainer",
+  "version": "0.0.1",
+  "description": "Trainer for navigation equipment",
+  "main": "index.min.js"
+}

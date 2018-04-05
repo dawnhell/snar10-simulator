@@ -47,20 +47,20 @@
 
     function init() {
         camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(30, 20, 30);
+        camera.position.set(7, 7, 7);
 
         scene = new THREE.Scene();
         scene.add(new THREE.AmbientLight(0x505050));
 
         var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.angle = Math.PI / 5;
+        spotLight.angle = Math.PI / 6;
         spotLight.penumbra = 0.2;
         spotLight.position.set(20, 30, 30);
         spotLight.castShadow = true;
         spotLight.shadow.camera.near = 10;
         spotLight.shadow.camera.far = 20;
-        spotLight.shadow.mapSize.width = 1024;
-        spotLight.shadow.mapSize.height = 1024;
+        spotLight.shadow.mapSize.width = 512;
+        spotLight.shadow.mapSize.height = 512;
 
         var dirLight = new THREE.DirectionalLight(0x55505a, 1);
         dirLight.position.set(10, 10, 10);
@@ -71,8 +71,8 @@
         dirLight.shadow.camera.left = -1;
         dirLight.shadow.camera.top = 1;
         dirLight.shadow.camera.bottom = -1;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
+        dirLight.shadow.mapSize.width = 512;
+        dirLight.shadow.mapSize.height = 512;
 
         scene.add(dirLight);
         scene.add(spotLight);
@@ -85,38 +85,84 @@
             clipShadows: true
         });
 
-        var normal = new THREE.TextureLoader().load('models/normal.jpg');
-        var loader = new THREE.TDSLoader();
+        // var normal = new THREE.TextureLoader().load('models/normal.jpg');
+        // var loader = new THREE.TDSLoader();
+        // loader.setPath('models/');
+        // loader.load('models/model.3DS', function (object) {
+        //     object.traverse(function (child) {
+        //         if (child instanceof THREE.Mesh) {
+        //             child.material.normalMap = normal;
+        //         }
+        //     });
+        //     object.rotateX(4.71);
+        //     object.position.set(0, 0.5, 0);
+        //     scene.add(object);
+        // });
+
+        // texture
+
+        var manager = new THREE.LoadingManager();
+        manager.onProgress = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+
+        var textureLoader = new THREE.TextureLoader( manager );
+//				var texture = textureLoader.load( 'textures/UV_Grid_Sm.jpg' );
+
+        // model
+
+        var onProgress = function (xhr) {
+            if (xhr.lengthComputable) {
+                var percentComplete = xhr.loaded / xhr.total * 100;
+                console.log( Math.round(percentComplete, 2) + '% downloaded');
+            }
+        };
+
+        var onError = function ( xhr ) {
+        };
+
+        var loader = new THREE.OBJLoader(manager);
         loader.setPath('models/');
-        loader.load('models/model.3DS', function (object) {
-            object.traverse(function (child) {
+        loader.load('angar_1.obj', function (object) {
+            object.traverse( function (child) {
                 if (child instanceof THREE.Mesh) {
-                    child.material.normalMap = normal;
+                    child.material.map = '';
                 }
             });
-            object.rotateX(4.71);
-            object.position.set(0, 0.5, 0);
+            // object.position.y = - 95;
             scene.add(object);
-        });
+        }, onProgress, onError);
 
-        var planeGeometry = new THREE.PlaneBufferGeometry(10, 10, 1, 1);
+        loader.load('snar.obj', function (object) {
+            object.traverse( function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material.map = '';
+                }
+            });
+            object.scale.set(0.04, 0.04, 0.04);
+            object.rotateY(80.1);
+            scene.add(object);
+        }, onProgress, onError);
+
+
+        var planeGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 1, 1);
 
         ground = new THREE.Mesh(planeGeometry,
             new THREE.MeshPhongMaterial({
-                color: 0xa0adaf, shininess: 150
+                color: 0xa0adaf, shininess: 100
             }));
         ground.rotation.x = -Math.PI / 2;
         ground.scale.multiplyScalar(3);
         ground.receiveShadow = true;
 
-        scene.add(ground);
+        // scene.add(ground);
 
-        var container = document.body;
+        var container = document.getElementsByClassName("canvas-container")[0];
 
         renderer = new THREE.WebGLRenderer();
         renderer.shadowMap.enabled = true;
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.8);
         window.addEventListener('resize', onWindowResize, false);
         container.appendChild(renderer.domElement);
 

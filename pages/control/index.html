@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Trainer</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="vendor.min.css" type="text/css"/>
+    <link rel="stylesheet" href="style.min.css" type="text/css"/>
+</head>
+<ui-view>
+</ui-view>
+<script>
+    /*  Global IPC for communication with Electron  */
+    var ipc = require("ipc");
+</script>
+<script type="text/javascript" src="vendor.min.js"></script>
+<script type="text/javascript" src="app.min.js"></script>
+</body>
+</html>
+
